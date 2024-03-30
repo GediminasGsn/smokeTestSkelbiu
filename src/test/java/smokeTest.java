@@ -47,11 +47,30 @@ public class smokeTest {
         //Accept with cookies
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
         driver.findElement(By.xpath("/html/body/div[6]/div[2]/div/div[1]/div/div[2]/div/button[1]")).click();
-
+        //Cookies accept validation
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         boolean isElementInvisible = wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//html/body/div[6]/div[2]/div/div[1]/div/div[1]/div[2]/h2")));
         Assert.assertTrue(isElementInvisible);
 
+    }
+    @Test
+    public void webTest2() {
+//Check and validate searching(search bar)
+        String url = "https://m.skelbiu.lt/";
+        driver.get(url);
+        //Accept with cookies
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+        driver.findElement(By.xpath("/html/body/div[6]/div[2]/div/div[1]/div/div[2]/div/button[1]")).click();
+        driver.findElement(By.id("keywordInputNew")).click();
+        driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[2]/input")).sendKeys("Traktorius");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[4]")).click();
+        //Search validation
+        WebElement message = driver.findElement(By.id("popular_categories_title_keyword"));
+        boolean displayed1 = message.isDisplayed();
+        String text = message.getText();
+        Assert.assertEquals(text, "\"traktorius\"");
+        Assert.assertEquals(displayed1, true);
 
     }
 }
