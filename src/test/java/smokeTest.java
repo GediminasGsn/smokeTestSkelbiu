@@ -119,8 +119,8 @@ public class smokeTest {
         waiter.until(ExpectedConditions.visibilityOf(element));
 
         String items = driver.findElement(By.xpath("//*[@id=\"body-container\"]/div[2]/div[1]/ul/li/span")).getText();
-        String numericPart = items.replaceAll("[^\\d]", "");
-        int itemsNo = Integer.parseInt(numericPart);
+        String numberPart = items.replaceAll("[^\\d]", "");
+        int itemsNo = Integer.parseInt(numberPart);
         int itemCnt = 0;
 
 
