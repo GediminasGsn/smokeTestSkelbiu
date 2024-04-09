@@ -11,7 +11,10 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import static java.lang.System.out;
 import java.time.Duration;
+import java.util.List;
+import java.util.Iterator;
 
 public class smokeTest {
     private WebDriver driver;
@@ -71,6 +74,57 @@ public class smokeTest {
         String text = message.getText();
         Assert.assertEquals(text, "\"traktorius\"");
         Assert.assertEquals(displayed1, true);
+
+    }
+    @Test
+    public void webTest3() {
+//Check and validate searching(menu clicking)
+        String url = "https://m.skelbiu.lt/";
+        driver.get(url);
+        //Accept with cookies
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+        driver.findElement(By.xpath("/html/body/div[6]/div[2]/div/div[1]/div/div[2]/div/button[1]")).click();
+        driver.findElement(By.xpath("/html/body/div[3]/div[2]/div[2]/ul/li[2]/a")).click();
+        driver.findElement(By.xpath("/html/body/div[3]/div[2]/div[3]/div[7]/a")).click();
+        driver.findElement(By.xpath("/html/body/div[3]/div[2]/div[3]/div[10]/a")).click();
+        //Wait for add
+        WebElement image = driver.findElement(By.xpath("/html/body/img[1]"));
+        WebDriverWait imageWait = new WebDriverWait(driver, Duration.ofSeconds(40));
+        imageWait.until(ExpectedConditions.visibilityOf(image));
+        //Veification
+        boolean isDisplayed = image.isDisplayed();
+        Assert.assertTrue(isDisplayed);
+        //Turn off add
+        driver.findElement(By.xpath("/html/body/img[2]")).click();
+        //Search verification
+        WebElement message = driver.findElement(By.xpath("/html/body/div[3]/div[2]/div[2]/a[3]"));
+        boolean displayed = message.isDisplayed();
+        String text = message.getText();
+        Assert.assertEquals(text, "Traktoriai");
+        Assert.assertEquals(displayed, true);
+
+
+    }
+    @Test
+    public void webTest4() {
+//Search and retrieve the ID of add according to search word
+        String url = "https://m.skelbiu.lt/";
+        driver.get(url);
+        //Accept with cookies
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+        driver.findElement(By.xpath("/html/body/div[6]/div[2]/div/div[1]/div/div[2]/div/button[1]")).click();
+        // Interact with search bar
+        driver.findElement(By.id("keywordInputNew")).click();
+        driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[2]/input")).sendKeys("samotines plytos");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[4]")).click();
+
+        List<WebElement> items =driver.findElements(By.xpath(".//*[@class='list-item']/following::a[item]"));
+        WebElement q;
+        for (int i = 0; i < items.size(); i++) {
+            System.out.println
+            
+        }
 
     }
 }
