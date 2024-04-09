@@ -136,7 +136,9 @@ public class smokeTest {
 
             // Add additional waiting time if needed after navigating back
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-//            driver.findElement(By.xpath("/html/body/div[3]/div[2]/div[4]/div[6]/div/span")).click();
+//            WebElement element = driver.findElement(By.id("element-id"));
+//            WebDriverWait waiter = new WebDriverWait(driver, Duration.ofSeconds(40));
+//            waiter.until(ExpectedConditions.invisibilityOf(element));
         }
 
     }
