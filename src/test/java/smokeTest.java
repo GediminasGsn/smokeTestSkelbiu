@@ -11,7 +11,7 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import static java.lang.System.out;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Iterator;
@@ -120,9 +120,17 @@ public class smokeTest {
         driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[4]")).click();
 
         List<WebElement> items =driver.findElements(By.xpath(".//*[@class='list-item']/following::a[item]"));
-        WebElement q;
-        for (int i = 0; i < items.size(); i++) {
-            System.out.println
+
+        for (int i = 1; i < items.size(); i++) {
+            WebElement item = items.get(i);
+            item.click();
+
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
+
+            String id = driver.findElement(By.xpath("/html/body/div[4]/div[2]/div[4]/div[13]/div")).getAttribute("id");
+            System.out.println(id);
+
             
         }
 
