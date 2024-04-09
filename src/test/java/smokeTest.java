@@ -119,19 +119,23 @@ public class smokeTest {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[4]")).click();
 
-        List<WebElement> items =driver.findElements(By.xpath(".//*[@class='list-item']/following::a[item]"));
+        List<WebElement> items =driver.findElements(By.xpath("/html/body/div[3]/div[2]/div[4]/div[3]/div[1]/a"));
 
-        for (int i = 1; i < items.size(); i++) {
+        for (int i = 0; i < items.size(); i++) {
             WebElement item = items.get(i);
             item.click();
 
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
-
-            String id = driver.findElement(By.xpath("/html/body/div[4]/div[2]/div[4]/div[13]/div")).getAttribute("id");
+            // Use the XPath of the element to retrieve its ID
+            String id = driver.findElement(By.xpath("/html/body/div[4]/div[2]/div[4]/div[13]/div")).getText();
             System.out.println(id);
 
-            
+            // Navigate back to the search results page
+            driver.navigate().back();
+
+            // Add additional waiting time if needed after navigating back
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         }
 
     }
