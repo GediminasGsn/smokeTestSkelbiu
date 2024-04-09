@@ -108,38 +108,48 @@ public class smokeTest {
     @Test
     public void webTest4() {
 //Search and retrieve the ID of add according to search word
-        String url = "https://m.skelbiu.lt/";
+        String url = "https://www.skelbiu.lt/skelbimai/1?keywords=samotines+plytos";
         driver.get(url);
         //Accept with cookies
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-        driver.findElement(By.xpath("/html/body/div[6]/div[2]/div/div[1]/div/div[2]/div/button[1]")).click();
-        // Interact with search bar
-        driver.findElement(By.id("keywordInputNew")).click();
-        driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[2]/input")).sendKeys("samotines plytos");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[4]")).click();
+        driver.findElement(By.id("onetrust-reject-all-handler")).click();
+        //Wait until element is visible
+        WebElement element = driver.findElement(By.xpath("//*[@id=\"body-container\"]/div[2]/div[1]/ul/li/span"));
+        WebDriverWait waiter = new WebDriverWait(driver, Duration.ofSeconds(40));
+        waiter.until(ExpectedConditions.visibilityOf(element));
 
-        List<WebElement> items =driver.findElements(By.xpath("/html/body/div[3]/div[2]/div[4]/div[3]/div[1]/a"));
+        String items = driver.findElement(By.xpath("//*[@id=\"body-container\"]/div[2]/div[1]/ul/li/span")).getText();
+        String numericPart = items.replaceAll("[^\\d]", "");
+        int itemsNo = Integer.parseInt(numericPart);
+        int itemCnt = 0;
 
-        for (int i = 0; i < items.size(); i++) {
-            WebElement item = items.get(i);
-            item.click();
 
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        for (int i = 1; i < 201; i++) {
 
-            // Use the XPath of the element to retrieve its ID
-            String id = driver.findElement(By.xpath("/html/body/div[4]/div[2]/div[4]/div[13]/div")).getText();
-            System.out.println(id);
-
-            // Navigate back to the search results page
-            driver.navigate().back();
-
-            // Add additional waiting time if needed after navigating back
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-            WebElement element = driver.findElement(By.xpath("/html/body/div[3]/div[2]/div[4]/div[6]/div"));
-            WebDriverWait waiter = new WebDriverWait(driver, Duration.ofSeconds(40));
-            waiter.until(ExpectedConditions.invisibilityOf(element));
+            String url1 = "https://www.skelbiu.lt/skelbimai/" + i + "?keywords=samotines+plytos";
+            driver.get(url1);
+            if (!driver.getCurrentUrl().equals(url1)) {
+                break; //end loop
+            }
+            for (int y = 1; y <= 27; y++) {
+                try {
+                    driver.findElement(By.xpath("(//*[@id='items-list-container']/div[" + (i + 1) + "]/div)[" + y + "]")).click();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    String adID = driver.findElement(By.cssSelector("#contentArea > div.main-item-container > div.itemscope > div.left-content > div.actions-container > div.block.id")).getText();
+                    if (adID.contains("ID")) {
+                        itemCnt++;
+                        System.out.println(adID);
+                    }
+                    driver.get("https://www.skelbiu.lt/skelbimai/" + i + "?keywords=samotines+plytos");
+                } catch (NoSuchElementException e) {
+                }
+            }
         }
-
+        System.out.println("Adds: " + itemCnt);
+        Assert.assertEquals(itemCnt, itemsNo);
     }
 }
